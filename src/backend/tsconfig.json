@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "NodeNext",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "pretty": true,
+    "lib": [],
+    "plugins": [],
+    "watch": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "./*"
+  ]
+}

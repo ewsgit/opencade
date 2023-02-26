@@ -2,16 +2,20 @@
   "name": "opencade",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "yarn",
   "scripts": {
-    "dev": "next dev",
+    "dev:frontend": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:backend": "yarn --cwd ./src/backend dev",
+    "postinstall": "yarn --cwd ./src/backend install"
   },
   "dependencies": {
     "@types/node": "18.14.1",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "concurrently": "^7.6.0",
     "eslint": "8.34.0",
     "eslint-config-next": "13.2.1",
     "next": "13.2.1",
