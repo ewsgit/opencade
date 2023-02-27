@@ -15,9 +15,7 @@ const Page: React.FC<IPage> = ({ children }) => {
         .then(res => res.ok ? res.json() : window.location.reload())
         .then(res => {
           sessionStorage.setItem("sessiontoken", res.sessiontoken)
-          setTimeout(() => {
-            router.push(`/arcade`)
-          }, 2000)
+          router.push(`/arcade`)
         })
   }, [])
 

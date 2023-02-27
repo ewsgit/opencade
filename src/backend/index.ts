@@ -59,7 +59,21 @@ app.get(`/auth/guest`, (req, res) => {
     return generateSessionToken()
   }
 
-  return res.json({ sessiontoken: generateSessionToken() })
+  let sessionToken = generateSessionToken()
+
+  USER_CACHE[`guest-${generateRandomStringOfLength(10)}`] = sessionToken
+
+  return res.json({ sessiontoken: sessionToken })
+})
+
+app.get(`/auth/username`, (req, res) => {
+  let token = req.headers.sessiontoken
+  let ind = Object.values(USER_CACHE).findIndex(val => val === token)
+
+  if (ind === -1)
+    return res.json({ error: true })
+
+  return res.json({ username: Object.keys(USER_CACHE)[ind] })
 })
 
 app.listen("3561", () => {
