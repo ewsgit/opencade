@@ -1,3 +1,5 @@
+import Layer from "engine/layer";
+
 export const ENGINE_LOG_PREFIX = "[OCE] "
 
 export interface IEngineOptions {
@@ -16,9 +18,18 @@ export default class Engine {
     // @ts-ignore
     containerElement: null
   }
-  private layers: HTMLCanvasElement[] = []
+  private layers: Layer[] = []
 
   constructor(options: IEngineOptions) {
+    // @ts-ignore
+    if (window?.engineMutationObserver) window.engineMutationObserver?.destruct?.()
+    // @ts-ignore
+    if (window?.engineResizeObserver) window.engineResizeObserver?.destruct?.()
+    // @ts-ignore
+    if (window?.engineTicker) clearInterval(window.engineTicker)
+    // @ts-ignore
+    if (window?.engineRenderer) clearInterval(window.engineRenderer)
+
     if (options?.containerElement) this.options.containerElement = options.containerElement
     if (options?.aspectRatio) this.options.aspectRatio = options.aspectRatio
     if (options?.frameRate) this.options.frameRate = options.frameRate
@@ -40,24 +51,58 @@ export default class Engine {
 
     this.createLayer()
 
-    const backgroundContext = this.layers[0].getContext("2d")!
+    const backgroundContext = this.layers[0].canvas.getContext("2d")!
 
     backgroundContext.fillStyle = "#111111"
     backgroundContext.fillRect(0, 0, this.screen().width(), this.screen().height())
 
-    new ResizeObserver(() => {
-      this.layers.forEach(layer => {
-        const containerRect = container.getBoundingClientRect()
-        layer.width = containerRect.width
-        layer.height = containerRect.height
-      })
-    }).observe(container)
+    let loadingScreenLogo = new Image()
+    loadingScreenLogo.src = require("./../../../../../assets/brand/opencade.png").default.src
 
-    new MutationObserver(() => {
+    loadingScreenLogo.onload = () => drawLoadingScreen(backgroundContext, this, loadingScreenLogo)
+
+    let resizeObserverWaitTimeout: any;
+
+    // @ts-ignore
+    window.engineResizeObserver = new ResizeObserver(() => {
+      clearTimeout(resizeObserverWaitTimeout)
+
+      resizeObserverWaitTimeout = setTimeout(() => {
+        this.layers.forEach(layer => {
+          const containerRect = container.getBoundingClientRect()
+          layer.canvas.width = containerRect.width
+          layer.canvas.height = containerRect.height
+        })
+      }, 500)
+    })
+
+    // @ts-ignore
+    window.engineResizeObserver.observe(this.options.containerElement)
+
+    // @ts-ignore
+    window.engineMutationObserver = new MutationObserver(() => {
+      if ((container.parentElement!.getAttribute("data-devmode") === "true") !== this.DEV_MODE)
+        console.log(`${ENGINE_LOG_PREFIX}DevMode: ${!this.DEV_MODE ? "enabled" : "disabled"}`)
+
       this.DEV_MODE = container.parentElement!.getAttribute("data-devmode") === "true"
+    })
 
-      console.log(`${ENGINE_LOG_PREFIX}Devmode: ${this.DEV_MODE ? "enabled" : "disabled"}`)
-    }).observe(container.parentElement!, { attributes: true, childList: false })
+    // @ts-ignore
+    window.engineMutationObserver.observe(container.parentElement!, { attributes: true, childList: false })
+
+    setTimeout(() => {
+      backgroundContext.clearRect(0, 0, this.screen().width(), this.screen().height())
+
+      // @ts-ignore
+      window.engineTicker = setInterval(() => {
+        this.tick()
+      }, 1000 / this.options.frameRate)
+
+      // @ts-ignore
+      window.engineRenderer = setInterval(() => {
+        this.render()
+      }, this.options.tickTime)
+    }, 1000)
   }
 
   screen() {
@@ -67,8 +112,9 @@ export default class Engine {
     }
   }
 
-  createLayer() {
-    let canvas = document.createElement("canvas")
+  createLayer(): this {
+    let layer = new Layer(document.createElement("canvas"), this)
+    let canvas = layer.canvas
 
     canvas.style.position = "absolute"
     canvas.style.top = "0px"
@@ -80,18 +126,45 @@ export default class Engine {
     canvas.height = containerRect.height
 
     this.options.containerElement.appendChild(canvas)
-    this.layers.push(canvas)
+    this.layers.push(layer)
+    return this
+  }
+
+  getLayer(index: number): Layer {
+    return this.layers[index]
+  }
+
+  tick() {
+    return
+  }
+
+  render() {
+    this.layers.forEach(layer => {
+      layer.context.clearRect(0, 0, this.screen().width(), this.screen().height())
+      layer.render()
+    })
   }
 }
 
-function drawLoadingScreen(context: CanvasRenderingContext2D, engine: Engine) {
-  console.log(engine)
+function drawLoadingScreen(context: CanvasRenderingContext2D, engine: Engine, logo: HTMLImageElement) {
+  let containerMargin = 50
+
   context.fillStyle = "#0f172a"
-  let containerMargin = 10
   context.fillRect(
       containerMargin,
       containerMargin,
       engine.screen().width() - (containerMargin * 2),
       engine.screen().height() - (containerMargin * 2)
   )
+
+  context.textAlign = "center"
+  context.textBaseline = "top"
+  context.fillStyle = "white"
+  context.font = "6rem __Inter_4b5723"
+
+  let centerContainerHeight = engine.screen().height() / 4
+
+  context.drawImage(logo, (engine.screen().width() / 2) - (256 / 2), centerContainerHeight, 256, 256)
+
+  context.fillText("OpenCade", engine.screen().width() / 2, (centerContainerHeight + 256) + containerMargin)
 }
