@@ -6,7 +6,7 @@ export interface IPage {
 }
 
 const Page: React.FC<IPage> = ({ children }) => {
-  return <main className={`bg-gray-900 h-screen overflow-y-auto w-full flex items-center justify-center`}>
+  return <main className={`bg-slate-900 h-screen overflow-y-auto w-full flex items-center justify-center`}>
     <Main/>
   </main>
 }

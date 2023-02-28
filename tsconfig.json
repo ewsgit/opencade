@@ -27,6 +27,12 @@
     "paths": {
       "web/*": [
         "./src/*"
+      ],
+      "engine/*": [
+        "./src/app/arcade/games/play/(engine)/*"
+      ],
+      "types/*": [
+        "./src/types/*"
       ]
     }
   },

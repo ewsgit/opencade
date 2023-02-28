@@ -25,25 +25,25 @@ export default function Home() {
         <section
             className={"pt-10 pb-10 pl-5 pr-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 max-w-7xl ml-auto mr-auto gap-4"}>
           <button
-              className={"group p-4 bg-gray-800 hover:bg-gray-700 active:bg-gray-600 border-2 border-gray-800 hover:border-gray-600 active:border-gray-500 rounded-xl transition-colors"}>
+              className={"group p-4 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border-2 border-slate-800 hover:border-slate-600 active:border-slate-500 rounded-xl transition-colors"}>
             <p className={"text-white font-semibold text-2xl text-center pb-2"}>0+ games</p>
             <div
                 className={"h-1 w-3/4 ml-auto mr-auto flex rounded-full bg-slate-700 group-hover:bg-slate-600 group-active:bg-slate-500 transition-colors"}></div>
-            <p className={"text-center text-gray-300 font-xl pt-2"}>Description Text</p>
+            <p className={"text-center text-slate-300 font-xl pt-2"}>Description Text</p>
           </button>
           <button
-              className={"group p-4 bg-gray-800 hover:bg-gray-700 active:bg-gray-600 border-2 border-gray-800 hover:border-gray-600 active:border-gray-500 rounded-xl transition-colors"}>
+              className={"group p-4 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border-2 border-slate-800 hover:border-slate-600 active:border-slate-500 rounded-xl transition-colors"}>
             <p className={"text-white font-semibold text-2xl text-center pb-2"}>0 concurrent players</p>
             <div
                 className={"h-1 w-3/4 ml-auto mr-auto flex rounded-full bg-slate-700 group-hover:bg-slate-600 group-active:bg-slate-500 transition-colors"}></div>
-            <p className={"text-center text-gray-300 font-xl pt-2"}>Description Text</p>
+            <p className={"text-center text-slate-300 font-xl pt-2"}>Description Text</p>
           </button>
           <button
-              className={"col-span-1 md:col-span-2 xl:col-span-1 group p-4 bg-gray-800 hover:bg-gray-700 active:bg-gray-600 border-2 border-gray-800 hover:border-gray-600 active:border-gray-500 rounded-xl transition-colors"}>
+              className={"col-span-1 md:col-span-2 xl:col-span-1 group p-4 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border-2 border-slate-800 hover:border-slate-600 active:border-slate-500 rounded-xl transition-colors"}>
             <p className={"text-white font-semibold text-2xl text-center pb-2"}>Play with friends</p>
             <div
                 className={"h-1 w-3/4 ml-auto mr-auto flex rounded-full bg-slate-700 group-hover:bg-slate-600 group-active:bg-slate-500 transition-colors"}></div>
-            <p className={"text-center text-gray-300 font-xl pt-2"}>Friend other players and join games together</p>
+            <p className={"text-center text-slate-300 font-xl pt-2"}>Friend other players and join games together</p>
           </button>
         </section>
       </main>

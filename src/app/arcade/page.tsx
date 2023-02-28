@@ -42,7 +42,7 @@ const Page: React.FC<IPage> = ({ children }) => {
         <p className={"mt-8 z-20 font-semibold text-white text-4xl"}>Browse games</p>
       </Link>
       <Link
-          href={"/friends"}
+          href={"/arcade/friends"}
           className={"relative flex flex-col items-center justify-center w-full pl-4 pr-4 pt-2 pb-2 bg-slate-700 hover:bg-slate-600 active:bg-slate-500 border-2 border-slate-700 hover:border-slate-500 active:border-slate-400 rounded-xl text-white transition-colors"}>
         <img
             loading={"lazy"}

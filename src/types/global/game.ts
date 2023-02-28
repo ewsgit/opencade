@@ -5,5 +5,5 @@ export default interface IGame {
 }
 
 export enum GAMES {
-  SNAKE
+  SNEK = "snek"
 }
