@@ -17,8 +17,9 @@ const Layout: React.FC<ILayout> = ({ children }) => {
     {
         !fullscreen && <Header/>
     }
-    <section className={`w-full h-screen ${!fullscreen && "pt-16"} grid grid-cols-1 child:h-full child:w-full`}
-             data-devmode={isDevMode}>
+    <section
+        className={`max-w-full ml-auto mr-auto max-h-screen ${!fullscreen && "pt-16"} grid grid-cols-1 child:max-h-full child:max-w-full`}
+        data-devmode={isDevMode}>
       {children}
     </section>
     <section className={"bg-slate-800"}>

@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef } from "react"
 import Engine from "engine/index";
-import Text from "engine/objects/ui/text"
+import TextObj from "engine/objects/ui/textObj"
+import ImageObj from "engine/objects/ui/imageObj";
 
 export interface IPage {
   children: React.ReactNode,
@@ -18,11 +19,11 @@ const Page: React.FC<IPage> = ({ children }) => {
                               containerElement: ref.current,
                               tickTime: 20,
                               frameRate: 60,
-                              aspectRatio: "1/2"
+                              aspectRatio: "16/9"
                             })
 
     let layer = engine.getLayer(0)
-    let textObj = new Text(layer.context, engine).setText("this is some text")
+    let textObj = new TextObj().setText("this is some text")
 
     textObj.setX(100)
     textObj.setY(100)
@@ -30,6 +31,11 @@ const Page: React.FC<IPage> = ({ children }) => {
     textObj.setBaseline("top")
 
     layer.addChild(textObj)
+
+    layer.addChild(new ImageObj())
+    layer.addChild(new ImageObj().setX(100))
+    layer.addChild(new ImageObj().setX(200))
+    layer.addChild(new ImageObj().setX(300))
   }, [])
 
   return <div ref={ref}></div>

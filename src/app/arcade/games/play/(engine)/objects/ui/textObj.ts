@@ -1,17 +1,15 @@
 import RenderableObject from "engine/renderableObject";
-import Engine, { ENGINE_LOG_PREFIX } from "engine/index";
+import { ENGINE_LOG_PREFIX } from "engine/index";
 
-export default class Text extends RenderableObject {
+export default class TextObj extends RenderableObject {
   private baseline: "bottom" | "top" | "middle" = "bottom"
   private text: string = ""
   private size: number = 60
   private font: string = "Calibri"
   private alignment: "start" | "end" | "left" | "center" | "right" = "left"
 
-  constructor(context: CanvasRenderingContext2D, engine: Engine) {
-    super(context, engine);
-
-    this.width = 10000
+  constructor() {
+    super();
   }
 
   setText(text: string): this {
@@ -66,6 +64,6 @@ export default class Text extends RenderableObject {
     this.context.textAlign = this.alignment
     this.context.textBaseline = this.baseline
     this.context.font = `${this.size}px ${this.font}`
-    this.context.fillText(this.text, this.x, this.y, this.width)
+    this.context.fillText(this.text, this.x, this.y)
   }
 }

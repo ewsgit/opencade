@@ -29,6 +29,7 @@ export default class Engine {
     if (window?.engineTicker) clearInterval(window.engineTicker)
     // @ts-ignore
     if (window?.engineRenderer) clearInterval(window.engineRenderer)
+    if (location.hash === "#dev") this.DEV_MODE = true
 
     if (options?.containerElement) this.options.containerElement = options.containerElement
     if (options?.aspectRatio) this.options.aspectRatio = options.aspectRatio
@@ -45,6 +46,11 @@ export default class Engine {
     const container = this.options.containerElement
 
     container.style.position = "relative"
+    container.style.display = "flex"
+    container.style.alignItems = "center"
+    container.style.justifyContent = "center"
+    container.style.backgroundColor = "#000000"
+    container.style.aspectRatio = this.options.aspectRatio
 
     this.layers = []
     container.childNodes.forEach(child => container.removeChild(child))
@@ -56,10 +62,11 @@ export default class Engine {
     backgroundContext.fillStyle = "#111111"
     backgroundContext.fillRect(0, 0, this.screen().width(), this.screen().height())
 
-    let loadingScreenLogo = new Image()
-    loadingScreenLogo.src = require("./../../../../../assets/brand/opencade.png").default.src
-
-    loadingScreenLogo.onload = () => drawLoadingScreen(backgroundContext, this, loadingScreenLogo)
+    if (!this.DEV_MODE) {
+      let loadingScreenLogo = new Image()
+      loadingScreenLogo.src = require("./../../../../../assets/brand/opencade.png").default.src
+      loadingScreenLogo.onload = () => drawLoadingScreen(backgroundContext, this, loadingScreenLogo)
+    }
 
     let resizeObserverWaitTimeout: any;
 
@@ -102,7 +109,7 @@ export default class Engine {
       window.engineRenderer = setInterval(() => {
         this.render()
       }, this.options.tickTime)
-    }, 1000)
+    }, this.DEV_MODE ? 0 : 2000)
   }
 
   screen() {
@@ -119,6 +126,7 @@ export default class Engine {
     canvas.style.position = "absolute"
     canvas.style.top = "0px"
     canvas.style.left = "0px"
+    canvas.style.backgroundColor = "#111111"
 
     const containerRect = this.options.containerElement.getBoundingClientRect()
 
