@@ -5,11 +5,7 @@ import Engine from "engine/index";
 import TextObj from "engine/objects/ui/textObj"
 import ImageObj from "engine/objects/ui/imageObj";
 
-export interface IPage {
-  children: React.ReactNode,
-}
-
-const Page: React.FC<IPage> = ({ children }) => {
+const Page: React.FC = () => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>
 
   useEffect(() => {

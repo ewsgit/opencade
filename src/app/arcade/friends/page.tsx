@@ -2,11 +2,7 @@ import Link from "next/link";
 import React from "react"
 import Header from "web/app/arcade/(components)/Header/Header";
 
-export interface IPage {
-  children: React.ReactNode,
-}
-
-const Page: React.FC<IPage> = ({ children }) => {
+const Page: React.FC = () => {
   return <div className={"min-h-screen bg-slate-900 text-white flex flex-col"}>
     <Header/>
     <section className={"rounded-2xl bg-slate-800 p-6 pl-8 pr-8 m-auto flex flex-col gap-6"}>

@@ -5,11 +5,7 @@ import SERVER_URL from "web/app/SERVER_URL";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export interface IPage {
-  children: React.ReactNode,
-}
-
-const Page: React.FC<IPage> = ({ children }) => {
+const Page: React.FC = () => {
   const router = useRouter()
   useEffect(() => {
     fetch(`${SERVER_URL()}/auth/guest`).then(res => res.ok ? res.json() : window.location.reload()).then(res => {

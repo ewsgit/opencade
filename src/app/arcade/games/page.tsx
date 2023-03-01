@@ -6,11 +6,7 @@ import { useRouter } from "next/navigation";
 import IGame, { GAMES } from "web/types/global/game";
 import Link from "next/link";
 
-export interface IPage {
-  children: React.ReactNode,
-}
-
-const Page: React.FC<IPage> = ({ children }) => {
+const Page: React.FC = () => {
   const games: IGame[] = [
     {
       background: require("./../../../assets/brand/background.svg").default.src,

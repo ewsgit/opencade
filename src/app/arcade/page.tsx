@@ -6,24 +6,19 @@ import { useRouter } from "next/navigation";
 import SERVER_URL from "web/app/SERVER_URL";
 import Link from "next/link";
 
-export interface IPage {
-  children: React.ReactNode,
-}
-
-const Page: React.FC<IPage> = ({ children }) => {
+const Page: React.FC = () => {
   const router = useRouter()
   const [ username, setUsername ] = useState("Unknown user")
 
   useEffect(() => {
     if (!sessionStorage.getItem("sessiontoken")) return router.push("/")
 
-    fetch(`${SERVER_URL()}/auth/username`, { headers: { sessiontoken: sessionStorage.getItem("sessiontoken")! } })
-        .then(res => res.json())
-        .then(res => {
-          if (res.error) return
+    fetch(`${SERVER_URL()}/auth/username`, { headers: { sessiontoken: sessionStorage.getItem("sessiontoken")! } }).then(
+        res => res.json()).then(res => {
+      if (res.error) return
 
-          setUsername(res.username)
-        })
+      setUsername(res.username)
+    })
   }, [])
 
   return <main className={"bg-slate-900 text-white min-h-screen"}>
