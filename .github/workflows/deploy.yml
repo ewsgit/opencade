@@ -15,13 +15,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: npm
+          cache: yarn
 
       - name: Build
         run: |
-          npm ci
-          npm run build
-          npm run export
+          yarn ci
+          yarn run build
+          yarn run export
           touch out/.nojekyll
 
       - name: Deploy
