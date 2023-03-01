@@ -5,5 +5,6 @@ export default interface IGame {
 }
 
 export enum GAMES {
-  SNEK = "snek"
+  SNEK = "snek",
+  DEMO = "demo"
 }

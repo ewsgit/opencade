@@ -19,8 +19,8 @@ const Page: React.FC<IPage> = ({ children }) => {
     },
     {
       background: require("./../../../assets/brand/background.svg").default.src,
-      name: "Snek1",
-      slug: GAMES.SNEK
+      name: "Demo",
+      slug: GAMES.DEMO
     },
     {
       background: require("./../../../assets/brand/background.svg").default.src,
