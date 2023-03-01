@@ -11,8 +11,6 @@ const Page: React.FC = () => {
   const [ username, setUsername ] = useState("Unknown user")
 
   useEffect(() => {
-    if (!sessionStorage.getItem("sessiontoken")) return router.push("/")
-
     fetch(`${SERVER_URL()}/auth/username`, { headers: { sessiontoken: sessionStorage.getItem("sessiontoken")! } }).then(
         res => res.json()).then(res => {
       if (res.error) return

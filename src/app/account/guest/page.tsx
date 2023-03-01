@@ -15,7 +15,7 @@ const Page: React.FC = () => {
   }, [])
 
   return <main
-      className={`bg-slate-900 h-screen overflow-y-auto w-full flex items-center justify-center flex-col gap-2`}>
+      className={`bg-slate-900 h-screen overflow-y-auto w-full flex items-center justify-center flex-col gap-4`}>
     <h1 className={"text-6xl text-white font-semibold"}>Generating temporary session...</h1>
     <Link
         href={"/arcade"}
