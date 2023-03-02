@@ -1,7 +1,7 @@
 import RenderableObject from "engine/renderableObject";
 import { ENGINE_LOG_PREFIX } from "engine/index";
 
-export default class TextObj extends RenderableObject {
+export default class TextObj extends RenderableObject<TextObj> {
   private baseline: "bottom" | "top" | "middle" = "bottom"
   private text: string = ""
   private size: number = 60

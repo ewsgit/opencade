@@ -6,13 +6,11 @@ export interface IEngineOptions {
   containerElement: HTMLDivElement
   frameRate: number,
   tickTime: number,
-  aspectRatio: `${number}/${number}`
 }
 
 export default class Engine {
   protected DEV_MODE: boolean = false
   private options: IEngineOptions = {
-    aspectRatio: "1/1",
     tickTime: 10,
     frameRate: 60,
     // @ts-ignore
@@ -32,7 +30,6 @@ export default class Engine {
     if (location.hash === "#dev") this.DEV_MODE = true
 
     if (options?.containerElement) this.options.containerElement = options.containerElement
-    if (options?.aspectRatio) this.options.aspectRatio = options.aspectRatio
     if (options?.frameRate) this.options.frameRate = options.frameRate
     if (options?.tickTime) this.options.tickTime = options.tickTime
 
@@ -45,12 +42,10 @@ export default class Engine {
 
     const container = this.options.containerElement
 
-    container.style.position = "relative"
     container.style.display = "flex"
     container.style.alignItems = "center"
     container.style.justifyContent = "center"
     container.style.backgroundColor = "#000000"
-    container.style.aspectRatio = this.options.aspectRatio
 
     this.layers = []
     container.childNodes.forEach(child => container.removeChild(child))
@@ -123,9 +118,7 @@ export default class Engine {
     let layer = new Layer(document.createElement("canvas"), this)
     let canvas = layer.canvas
 
-    canvas.style.position = "absolute"
-    canvas.style.top = "0px"
-    canvas.style.left = "0px"
+    canvas.style.margin = "auto"
     canvas.style.backgroundColor = "#111111"
 
     const containerRect = this.options.containerElement.getBoundingClientRect()
@@ -143,7 +136,9 @@ export default class Engine {
   }
 
   tick() {
-    return
+    this.layers.forEach(layer => {
+      layer.tick()
+    })
   }
 
   render() {

@@ -1,6 +1,6 @@
 import Engine from "engine/index";
 
-export default class RenderableObject {
+export default class RenderableObject<T extends RenderableObject<T>> {
   // @ts-ignore
   context: CanvasRenderingContext2D;
   // @ts-ignore
@@ -9,10 +9,8 @@ export default class RenderableObject {
   protected height: number = 50
   protected x: number = 10
   protected y: number = 10
-
-  constructor() {
-    return
-  }
+  private tickListener?: (object: T) => void
+  private renderListener?: (object: T) => void
 
   setX(x: number): this {
     this.x = x
@@ -32,7 +30,22 @@ export default class RenderableObject {
     return this.y
   }
 
-  render() {
-    return console.log("child render")
+  onTick(cb: (object: T) => void): this {
+    this.tickListener = cb
+    return this
   }
+
+  onRender(cb: (object: T) => void): this {
+    this.renderListener = cb
+    return this
+  }
+
+  tick() {
+    return this.tickListener?.(this as any as T)
+  }
+
+  render() {
+    return this.renderListener?.(this as any as T)
+  }
+
 }

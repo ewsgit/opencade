@@ -26,4 +26,10 @@ export default class Layer {
       child.render()
     })
   }
+
+  tick() {
+    this.children.forEach(child => {
+      child.tick()
+    })
+  }
 }

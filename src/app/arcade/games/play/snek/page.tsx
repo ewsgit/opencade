@@ -1,21 +1,38 @@
 "use client"
 
-import React, { useState } from "react";
+import React, {useEffect, useRef} from "react"
+import Engine from "engine/index";
+import Text from "engine/objects/ui/textObj"
 
 const Page: React.FC = () => {
-  const [ gameState, setGameState ] = useState<"MENU" | "GAME" | "ABOUT" | "GAME_MODE_SELECTOR">("MENU")
+    const ref = useRef() as React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>
 
-  return <div className={"aspect-video"}>
-    {
-        gameState === "MENU" && <main>
-            <h1>Snek</h1>
-            <p>An OpenCade game</p>
+    useEffect(() => {
+        if (!ref?.current) return
 
-            <button>Play</button>
-            <button>About</button>
-        </main>
-    }
-  </div>
+        let engine = new Engine({
+            containerElement: ref.current,
+            tickTime: 20,
+            frameRate: 60,
+        })
+
+        let layer = engine.getLayer(0)
+        layer.addChild(
+            new Text()
+                .setText("this is some text")
+                .setX(100)
+                .setY(100)
+                .setAlignment("left")
+                .setBaseline("top")
+                .onTick(
+                    (obj) => {
+                        obj.setY(obj.getY() + 10)
+                        obj.setSize(obj.getSize() - 0.5)
+                    })
+        )
+    }, [])
+
+    return <div ref={ref}></div>
 }
 
 export default Page

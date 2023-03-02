@@ -13,12 +13,13 @@ const Layout: React.FC<ILayout> = ({ children }) => {
   const [ isDevMode, setIsDevMode ] = useState(false)
   const [ devClicks, setDevClicks ] = useState(0)
 
-  return <main className={"bg-slate-900 min-h-screen overflow-y-hidden grid-rows-[1fr,auto]"}>
+  return <main
+      className={`bg-slate-900 min-h-screen overflow-y-hidden grid-rows-[100vh,auto] ${!fullscreen && "pt-16"}`}>
     {
         !fullscreen && <Header/>
     }
     <section
-        className={`max-w-full ml-auto mr-auto max-h-full ${!fullscreen && "pt-16"} grid grid-cols-1 child:max-h-full child:max-w-full relative`}
+        className={`ml-auto mr-auto h-screen max-w-full box-border grid grid-cols-1`}
         data-devmode={isDevMode}>
       {children}
     </section>
