@@ -4,21 +4,21 @@ export const ENGINE_LOG_PREFIX = "[OCE] "
 
 export interface IEngineOptions {
   containerElement: HTMLDivElement
-  frameRate: number,
-  tickTime: number,
+  fps: number,
+  tps: number,
 }
 
 export default class Engine {
   protected DEV_MODE: boolean = false
   private options: IEngineOptions = {
-    tickTime: 10,
-    frameRate: 60,
+    tps: 10,
+    fps: 60,
     // @ts-ignore
     containerElement: null
   }
   private layers: Layer[] = []
 
-  constructor(options: IEngineOptions) {
+  constructor(options: IEngineOptions, callback: (engine: Engine) => void) {
     // @ts-ignore
     if (window?.engineMutationObserver) window.engineMutationObserver?.destruct?.()
     // @ts-ignore
@@ -30,8 +30,8 @@ export default class Engine {
     if (location.hash === "#dev") this.DEV_MODE = true
 
     if (options?.containerElement) this.options.containerElement = options.containerElement
-    if (options?.frameRate) this.options.frameRate = options.frameRate
-    if (options?.tickTime) this.options.tickTime = options.tickTime
+    if (options?.fps) this.options.fps = options.fps
+    if (options?.tps) this.options.tps = options.tps
 
     // Check if the containerElement is set, if not crash the engine and report it to the user.
     if (!this.options.containerElement)
@@ -53,9 +53,6 @@ export default class Engine {
     this.createLayer()
 
     const backgroundContext = this.layers[0].canvas.getContext("2d")!
-
-    backgroundContext.fillStyle = "#111111"
-    backgroundContext.fillRect(0, 0, this.screen().width(), this.screen().height())
 
     if (!this.DEV_MODE) {
       let loadingScreenLogo = new Image()
@@ -92,18 +89,19 @@ export default class Engine {
     // @ts-ignore
     window.engineMutationObserver.observe(container.parentElement!, { attributes: true, childList: false })
 
-    setTimeout(() => {
-      backgroundContext.clearRect(0, 0, this.screen().width(), this.screen().height())
+    // backgroundContext.clearRect(0, 0, this.screen().width(), this.screen().height())
 
+    setTimeout(() => {
       // @ts-ignore
       window.engineTicker = setInterval(() => {
         this.tick()
-      }, 1000 / this.options.frameRate)
+      }, 1000 / this.options.tps)
 
       // @ts-ignore
       window.engineRenderer = setInterval(() => {
         this.render()
-      }, this.options.tickTime)
+      }, 1000 / this.options.fps)
+      return callback(this)
     }, this.DEV_MODE ? 0 : 2000)
   }
 
@@ -143,7 +141,6 @@ export default class Engine {
 
   render() {
     this.layers.forEach(layer => {
-      layer.context.clearRect(0, 0, this.screen().width(), this.screen().height())
       layer.render()
     })
   }

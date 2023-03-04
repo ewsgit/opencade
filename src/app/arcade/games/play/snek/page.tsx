@@ -2,7 +2,7 @@
 
 import React, {useEffect, useRef} from "react"
 import Engine from "engine/index";
-import Text from "engine/objects/ui/textObj"
+import RenderableObject from "engine/renderableObject";
 
 const Page: React.FC = () => {
     const ref = useRef() as React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>
@@ -10,26 +10,48 @@ const Page: React.FC = () => {
     useEffect(() => {
         if (!ref?.current) return
 
-        let engine = new Engine({
-            containerElement: ref.current,
-            tickTime: 20,
-            frameRate: 60,
-        })
+        new Engine(
+            {
+                containerElement: ref.current,
+                tps: 20,
+                fps: 60,
+            },
+            engine => {
+                let layer = engine.getLayer(0)
 
-        let layer = engine.getLayer(0)
-        layer.addChild(
-            new Text()
-                .setText("this is some text")
-                .setX(100)
-                .setY(100)
-                .setAlignment("left")
-                .setBaseline("top")
-                .onTick(
-                    (obj) => {
-                        obj.setY(obj.getY() + 10)
-                        obj.setSize(obj.getSize() - 0.5)
-                    })
-        )
+                let SnakeSegmentSize = 20
+                let SnakeHeadX = 0
+                let SnakeHeadY = 0
+
+                enum SnakeDirection {
+                    UP = 0,
+                    DOWN = 1,
+                    LEFT = 2,
+                    RIGHT = 3
+                }
+
+                let SnakeHeadDirection: SnakeDirection = SnakeDirection.RIGHT
+
+                layer.addChild(
+                    new RenderableObject<RenderableObject<any>>()
+                        .setHeight(100)
+                        .setWidth(2)
+                        .onTick((obj) => {
+                            if (SnakeHeadDirection === SnakeDirection.LEFT) {
+                                obj.setX(obj.getX() - SnakeSegmentSize)
+                            }
+                            if (SnakeHeadDirection === SnakeDirection.RIGHT) {
+                                obj.setX(obj.getX() + SnakeSegmentSize)
+                            }
+                            if (SnakeHeadDirection === SnakeDirection.UP) {
+                                obj.setY(obj.getY() - SnakeSegmentSize)
+                            }
+                            if (SnakeHeadDirection === SnakeDirection.DOWN) {
+                                obj.setY(obj.getY() + SnakeSegmentSize)
+                            }
+                        }))
+            })
+
     }, [])
 
     return <div ref={ref}></div>

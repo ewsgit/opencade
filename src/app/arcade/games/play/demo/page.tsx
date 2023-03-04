@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef } from "react"
+import React, {useEffect, useRef} from "react"
 import Engine from "engine/index";
 import TextObj from "engine/objects/ui/textObj"
 import ImageObj from "engine/objects/ui/imageObj";
@@ -14,8 +14,8 @@ const Page: React.FC = () => {
     let engine = new Engine(
         {
           containerElement: ref.current,
-          tickTime: 20,
-          frameRate: 60,
+          tps: 20,
+          fps: 60,
           aspectRatio: "16/9"
         }
     )

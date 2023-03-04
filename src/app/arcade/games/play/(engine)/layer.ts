@@ -4,8 +4,8 @@ import Engine from "engine/index";
 export default class Layer {
   canvas: HTMLCanvasElement
   context: CanvasRenderingContext2D
-  children: RenderableObject[] = []
-  private engine: Engine
+  children: RenderableObject<RenderableObject<any>>[] = []
+  private readonly engine: Engine
 
   constructor(canvas: HTMLCanvasElement, engine: Engine) {
     this.canvas = canvas
@@ -13,7 +13,7 @@ export default class Layer {
     this.engine = engine
   }
 
-  addChild(child: RenderableObject): this {
+  addChild(child: RenderableObject<RenderableObject<any>>): this {
     child.engine = this.engine
     child.context = this.context
 
