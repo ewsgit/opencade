@@ -13,7 +13,7 @@ const Page: React.FC = () => {
         new Engine(
             {
                 containerElement: ref.current,
-                tps: 20,
+                tps: 10,
                 fps: 60,
             },
             engine => {
@@ -22,6 +22,7 @@ const Page: React.FC = () => {
                 let SnakeSegmentSize = 20
                 let SnakeHeadX = 0
                 let SnakeHeadY = 0
+                let SnakeSegments: RenderableObject<RenderableObject<any>>[] = []
 
                 enum SnakeDirection {
                     UP = 0,
@@ -32,24 +33,39 @@ const Page: React.FC = () => {
 
                 let SnakeHeadDirection: SnakeDirection = SnakeDirection.RIGHT
 
-                layer.addChild(
-                    new RenderableObject<RenderableObject<any>>()
-                        .setHeight(100)
-                        .setWidth(2)
+                function addSegment() {
+                    console.log("adding segment to the snake")
+
+                    let index = SnakeSegments.length
+                    console.log(index)
+
+                    console.log(SnakeSegments)
+
+                    let object = new RenderableObject<RenderableObject<any>>()
+                        .setHeight(25)
+                        .setWidth(25)
                         .onTick((obj) => {
-                            if (SnakeHeadDirection === SnakeDirection.LEFT) {
-                                obj.setX(obj.getX() - SnakeSegmentSize)
-                            }
-                            if (SnakeHeadDirection === SnakeDirection.RIGHT) {
+                            if ((obj.getX() + obj.getWidth()) >= engine.screen().width()) obj.setX(0)
+                            if (index === 0) {
                                 obj.setX(obj.getX() + SnakeSegmentSize)
-                            }
-                            if (SnakeHeadDirection === SnakeDirection.UP) {
-                                obj.setY(obj.getY() - SnakeSegmentSize)
-                            }
-                            if (SnakeHeadDirection === SnakeDirection.DOWN) {
                                 obj.setY(obj.getY() + SnakeSegmentSize)
+
+                                return
                             }
-                        }))
+
+                            obj.setX(SnakeSegments[index - 1].getX())
+
+                        })
+
+                    SnakeSegments.push(object)
+
+                    layer.addChild(
+                        object
+                    )
+                }
+
+                addSegment()
+                addSegment()
             })
 
     }, [])

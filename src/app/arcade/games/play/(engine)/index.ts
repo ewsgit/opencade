@@ -10,6 +10,7 @@ export interface IEngineOptions {
 
 export default class Engine {
   protected DEV_MODE: boolean = false
+  protected mouse: { x: number, y:number } = { x: 0, y: 0 }
   private options: IEngineOptions = {
     tps: 10,
     fps: 60,
@@ -91,6 +92,23 @@ export default class Engine {
 
     // backgroundContext.clearRect(0, 0, this.screen().width(), this.screen().height())
 
+    this.options.containerElement.addEventListener("mousemove", e => {
+      this.mouse.x = e.clientX
+      this.mouse.y = e.clientY
+    })
+
+    this.options.containerElement.addEventListener("mousedown", () => {
+      this.layers.forEach(layer => {
+        layer.children.forEach(child => {
+          if (this.mouse.x >= child.getX() && this.mouse.x <= child.getX() + child.getWidth()) {
+            if (this.mouse.y >= child.getY() && this.mouse.y <= child.getY() + child.getHeight()) {
+              child.mouseDown()
+            }
+          }
+        })
+      })
+    })
+
     setTimeout(() => {
       // @ts-ignore
       window.engineTicker = setInterval(() => {
@@ -118,6 +136,8 @@ export default class Engine {
 
     canvas.style.margin = "auto"
     canvas.style.backgroundColor = "#111111"
+    canvas.style.aspectRatio = "1 / 1"
+    canvas.style.width = "100%"
 
     const containerRect = this.options.containerElement.getBoundingClientRect()
 
@@ -141,6 +161,7 @@ export default class Engine {
 
   render() {
     this.layers.forEach(layer => {
+      layer.context.clearRect(0, 0, this.screen().width(), this.screen().height())
       layer.render()
     })
   }

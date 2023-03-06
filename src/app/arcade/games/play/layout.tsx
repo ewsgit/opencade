@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, {useState} from "react"
 import Header from "web/app/arcade/games/play/(components)/Header/Header";
 import Icon from "web/app/(components)/Icon/Icon";
 
@@ -14,12 +14,12 @@ const Layout: React.FC<ILayout> = ({ children }) => {
   const [ devClicks, setDevClicks ] = useState(0)
 
   return <main
-      className={`bg-slate-900 min-h-screen overflow-y-hidden grid-rows-[100vh,auto] ${!fullscreen && "pt-16"}`}>
+      className={`bg-slate-900 min-h-screen overflow-y-hidden`}>
     {
         !fullscreen && <Header/>
     }
     <section
-        className={`ml-auto mr-auto h-screen max-w-full box-border grid grid-cols-1`}
+        className={`ml-auto mr-auto h-screen max-w-full box-border grid grid-cols-1 ${!fullscreen && "pt-16"}`}
         data-devmode={isDevMode}>
       {children}
     </section>
