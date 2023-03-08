@@ -13,16 +13,16 @@ const Page: React.FC = () => {
         new Engine(
             {
                 containerElement: ref.current,
-                tps: 10,
-                fps: 60,
+                tps: 10
             },
             engine => {
                 let layer = engine.getLayer(0)
 
-                let SnakeSegmentSize = 20
+                let SnakeSegmentCountWidth = 30
+                let SnakeSegmentSize = engine.screen().width() / SnakeSegmentCountWidth
                 let SnakeHeadX = 0
                 let SnakeHeadY = 0
-                let SnakeSegments: RenderableObject<RenderableObject<any>>[] = []
+                let SnakeSegments: {x: number, y:number}[] = [{x: 2, y: 5}, {x: 3, y:5}]
 
                 enum SnakeDirection {
                     UP = 0,
@@ -33,39 +33,18 @@ const Page: React.FC = () => {
 
                 let SnakeHeadDirection: SnakeDirection = SnakeDirection.RIGHT
 
-                function addSegment() {
-                    console.log("adding segment to the snake")
+                layer.addChild(
+                    new RenderableObject<RenderableObject<any>>()
+                        .onRender((obj) => {
+                            console.log("render")
 
-                    let index = SnakeSegments.length
-                    console.log(index)
-
-                    console.log(SnakeSegments)
-
-                    let object = new RenderableObject<RenderableObject<any>>()
-                        .setHeight(25)
-                        .setWidth(25)
-                        .onTick((obj) => {
-                            if ((obj.getX() + obj.getWidth()) >= engine.screen().width()) obj.setX(0)
-                            if (index === 0) {
-                                obj.setX(obj.getX() + SnakeSegmentSize)
-                                obj.setY(obj.getY() + SnakeSegmentSize)
-
-                                return
-                            }
-
-                            obj.setX(SnakeSegments[index - 1].getX())
-
+                            SnakeSegments.forEach(segment => {
+                                // @ts-ignore
+                                obj.context.fillStyle = "green"
+                                obj.context?.fillRect?.(segment.x * SnakeSegmentSize, segment.y * SnakeSegmentSize, (segment.x * SnakeSegmentSize) + SnakeSegmentSize, (segment.y * SnakeSegmentSize) + SnakeSegmentSize)
+                            })
                         })
-
-                    SnakeSegments.push(object)
-
-                    layer.addChild(
-                        object
-                    )
-                }
-
-                addSegment()
-                addSegment()
+                )
             })
 
     }, [])

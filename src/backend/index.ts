@@ -15,7 +15,7 @@ function generateRandomStringOfLength(len: number) {
   return randomArray.join('');
 }
 
-var whitelist = [ 'http://localhost:3000', 'http://example2.com' ]
+var whitelist = [ 'http://localhost:3000' ]
 
 app.use(cors(
     {

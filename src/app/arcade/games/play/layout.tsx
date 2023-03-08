@@ -19,7 +19,7 @@ const Layout: React.FC<ILayout> = ({ children }) => {
         !fullscreen && <Header/>
     }
     <section
-        className={`ml-auto mr-auto h-screen max-w-full box-border grid grid-cols-1 ${!fullscreen && "pt-16"}`}
+        className={`ml-auto mr-auto h-screen max-w-full box-border ${!fullscreen && "pt-16"}`}
         data-devmode={isDevMode}>
       {children}
     </section>

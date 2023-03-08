@@ -1,10 +1,10 @@
 import Engine from "engine/index";
+import Layer from "engine/layer";
 
 export default class RenderableObject<T extends RenderableObject<T>> {
-    // @ts-ignore
-    context: CanvasRenderingContext2D;
-    // @ts-ignore
-    engine: Engine;
+    context?: CanvasRenderingContext2D;
+    engine?: Engine;
+    layer?: Layer;
 
     protected width: number = 50
     protected height: number = 50
@@ -17,6 +17,7 @@ export default class RenderableObject<T extends RenderableObject<T>> {
 
     setX(x: number): this {
         this.x = x
+        this?.layer?.render()
         return this
     }
 
@@ -26,6 +27,7 @@ export default class RenderableObject<T extends RenderableObject<T>> {
 
     setY(y: number): this {
         this.y = y
+        this?.layer?.render()
         return this
     }
 
@@ -35,11 +37,13 @@ export default class RenderableObject<T extends RenderableObject<T>> {
 
     setWidth(width: number): this {
         this.width = width
+        this?.layer?.render()
         return this
     }
 
     setHeight(height: number): this {
         this.height = height
+        this?.layer?.render()
         return this
     }
 
@@ -51,9 +55,13 @@ export default class RenderableObject<T extends RenderableObject<T>> {
         return this.height
     }
 
-    mouseDown(cb: (object: T) => void): this {
+    onMouseDown(cb: (object: T) => void): this {
         this.mouseDownListener = cb
         return this
+    }
+
+    mouseDown() {
+        this.mouseDownListener?.(this as any as T)
     }
 
     onTick(cb: (object: T) => void): this {
@@ -72,7 +80,8 @@ export default class RenderableObject<T extends RenderableObject<T>> {
 
     render() {
         this.renderListener?.(this as any as T)
+        // @ts-ignore
         this.context.fillStyle = "#ff0000"
-        this.context.fillRect(this.x, this.y, this.width, this.height)
+        this?.context?.fillRect?.(this.x, this.y, this.width, this.height)
     }
 }

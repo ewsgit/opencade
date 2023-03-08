@@ -16,12 +16,14 @@ export default class Layer {
   addChild(child: RenderableObject<RenderableObject<any>>): this {
     child.engine = this.engine
     child.context = this.context
+    child.layer = this
 
     this.children.push(child)
     return this
   }
 
   render() {
+    this.context.clearRect(0, 0, this.engine.screen().width(), this.engine.screen().height())
     this.children.forEach(child => {
       child.render()
     })
