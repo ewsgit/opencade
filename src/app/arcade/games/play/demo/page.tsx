@@ -11,15 +11,14 @@ const Page: React.FC = () => {
   useEffect(() => {
     if (!ref?.current) return
 
-    let engine = new Engine(
+    new Engine(
         {
           containerElement: ref.current,
           tps: 20,
           fps: 60,
           aspectRatio: "16/9"
-        }
-    )
-
+        },
+        (engine) => {
     let layer = engine.getLayer(0)
     let textObj = new TextObj().setText("this is some text")
 
@@ -34,6 +33,10 @@ const Page: React.FC = () => {
     layer.addChild(new ImageObj().setX(100))
     layer.addChild(new ImageObj().setX(200))
     layer.addChild(new ImageObj().setX(300))
+
+        }
+    )
+
   }, [])
 
   return <div ref={ref}></div>
