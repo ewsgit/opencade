@@ -1,6 +1,6 @@
 import RenderableObject from "engine/renderableObject";
 
-export default class ImageObj extends RenderableObject {
+export default class ImageObj extends RenderableObject<ImageObj> {
   private readonly image
 
   constructor() {
