@@ -2,68 +2,71 @@ import RenderableObject from "engine/renderableObject";
 import { ENGINE_LOG_PREFIX } from "engine/index";
 
 export default class TextObj extends RenderableObject<TextObj> {
-  private baseline: "bottom" | "top" | "middle" = "bottom"
-  private text: string = ""
-  private size: number = 60
-  private font: string = "Calibri"
-  private alignment: "start" | "end" | "left" | "center" | "right" = "left"
+  private baseline: "bottom" | "top" | "middle" = "bottom";
+  private text: string = "";
+  private size: number = 60;
+  private font: string = "Calibri";
+  private alignment: "start" | "end" | "left" | "center" | "right" = "left";
 
   constructor() {
     super();
   }
 
   setText(text: string): this {
-    this.text = text
-    return this
+    this.text = text;
+    return this;
   }
 
   getText(): string {
-    return this.text
+    return this.text;
   }
 
   setBaseline(baseline: "bottom" | "top" | "middle"): this {
-    this.baseline = baseline
-    return this
+    this.baseline = baseline;
+    return this;
   }
 
   getBaseline(): "bottom" | "top" | "middle" {
-    return this.baseline
+    return this.baseline;
   }
 
   setAlignment(alignment: "start" | "end" | "left" | "center" | "right"): this {
-    this.alignment = alignment
-    return this
+    this.alignment = alignment;
+    return this;
   }
 
   getAlignment(): "start" | "end" | "left" | "center" | "right" {
-    return this.alignment
+    return this.alignment;
   }
 
   setFont(font: string): this {
-    this.font = font
-    return this
+    this.font = font;
+    return this;
   }
 
   getFont(): string {
-    return this.font
+    return this.font;
   }
 
   setSize(size: number): this {
-    this.size = size
-    return this
+    this.size = size;
+    return this;
   }
 
   getSize(): number {
-    return this.size
+    return this.size;
   }
 
   render() {
-    if (this.text === "") return console.error(`${ENGINE_LOG_PREFIX}rendering text for string ""!`)
+    if (this.text === "")
+      return console.error(`${ENGINE_LOG_PREFIX}rendering text for string ""!`);
 
-    this.context.fillStyle = "white"
-    this.context.textAlign = this.alignment
-    this.context.textBaseline = this.baseline
-    this.context.font = `${this.size}px ${this.font}`
-    this.context.fillText(this.text, this.x, this.y)
+    if (!this.context) return;
+
+    this.context.fillStyle = "white";
+    this.context.textAlign = this.alignment;
+    this.context.textBaseline = this.baseline;
+    this.context.font = `${this.size}px ${this.font}`;
+    this.context.fillText(this.text, this.x, this.y);
   }
 }
