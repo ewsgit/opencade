@@ -22,8 +22,10 @@ export default class Engine {
     // Reset global variables from previous engine instances if they exist
 
     // @ts-ignore
-    if (window?.engineMutationObserver)
+    if (window?.engineMutationObserver) {
+      // @ts-ignore
       window.engineMutationObserver?.destruct?.();
+    }
     // @ts-ignore
     if (window?.engineResizeObserver) window.engineResizeObserver?.destruct?.();
     // @ts-ignore
