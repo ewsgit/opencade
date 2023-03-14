@@ -15,7 +15,6 @@ const Page: React.FC = () => {
         {
           containerElement: ref.current,
           tps: 20,
-          fps: 60,
           aspectRatio: "16/9"
         },
         (engine) => {
