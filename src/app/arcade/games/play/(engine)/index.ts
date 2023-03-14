@@ -19,6 +19,8 @@ export default class Engine {
   private layers: Layer[] = [];
 
   constructor(options: IEngineOptions, callback: (engine: Engine) => void) {
+    // Reset global variables from previous engine instances if they exist
+
     // @ts-ignore
     if (window?.engineMutationObserver)
       window.engineMutationObserver?.destruct?.();
@@ -27,11 +29,9 @@ export default class Engine {
     // @ts-ignore
     if (window?.engineTicker) clearInterval(window.engineTicker);
     if (location.hash === "#dev") this.DEV_MODE = true;
-
     if (options?.containerElement)
       this.options.containerElement = options.containerElement;
     if (options?.tps) this.options.tps = options.tps;
-
     // Check if the containerElement is set, if not crash the engine and report it to the user.
     if (!this.options.containerElement)
       throw new Error(
