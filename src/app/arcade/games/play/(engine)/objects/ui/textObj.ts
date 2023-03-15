@@ -1,10 +1,10 @@
 import RenderableObject from "engine/renderableObject";
-import { ENGINE_LOG_PREFIX } from "engine/index";
+import {ENGINE_LOG_PREFIX} from "engine/index";
 
 export default class TextObj extends RenderableObject<TextObj> {
   private baseline: "bottom" | "top" | "middle" = "bottom";
   private text: string = "";
-  private size: number = 60;
+  private textSize: number = 60;
   private font: string = "Calibri";
   private alignment: "start" | "end" | "left" | "center" | "right" = "left";
 
@@ -49,12 +49,12 @@ export default class TextObj extends RenderableObject<TextObj> {
   }
 
   setSize(size: number): this {
-    this.size = size;
+    this.textSize = size;
     return this;
   }
 
   getSize(): number {
-    return this.size;
+    return this.textSize;
   }
 
   render() {
@@ -66,7 +66,7 @@ export default class TextObj extends RenderableObject<TextObj> {
     this.context.fillStyle = "white";
     this.context.textAlign = this.alignment;
     this.context.textBaseline = this.baseline;
-    this.context.font = `${this.size}px ${this.font}`;
-    this.context.fillText(this.text, this.x, this.y);
+    this.context.font = `${this.textSize}px ${this.font}`;
+    this.context.fillText(this.text, this.position.x, this.position.y);
   }
 }

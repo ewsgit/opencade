@@ -6,53 +6,52 @@ export default class RenderableObject<T extends RenderableObject<T>> {
     engine?: Engine;
     layer?: Layer;
 
-    protected width: number = 50
-    protected height: number = 50
-    protected x: number = 0
-    protected y: number = 0
+    protected position: { x: number, y: number } = {x: 0, y: 0}
+    protected size: { width: number, height: number } = {width: 50, height: 50}
 
     private tickListener?: (object: T) => void
     private renderListener?: (object: T) => void
     private mouseDownListener?: (object: T) => void
+    private keyboardInputListener?: (object: T, key: string) => void
 
     setX(x: number): this {
-        this.x = x
+        this.position.x = x
         this?.layer?.render()
         return this
     }
 
     getX(): number {
-        return this.x
+        return {...this.position}.x
     }
 
     setY(y: number): this {
-        this.y = y
+        this.position.y = y
         this?.layer?.render()
         return this
     }
 
     getY(): number {
-        return this.y
+        return {...this.position}.y
     }
 
     setWidth(width: number): this {
-        this.width = width
+        this.size.width = width
         this?.layer?.render()
         return this
     }
 
     setHeight(height: number): this {
-        this.height = height
+        this.size.height = height
         this?.layer?.render()
         return this
     }
 
     getWidth(): number {
-        return this.width
+        return { ...this.size }.width
     }
 
     getHeight(): number {
-        return this.height
+        return { ...this.size }.height
     }
 
     onMouseDown(cb: (object: T) => void): this {
@@ -74,6 +73,11 @@ export default class RenderableObject<T extends RenderableObject<T>> {
         return this
     }
 
+    onKeyboardInput(cb: (object: T, key: string) => void): this {
+        this.keyboardInputListener = cb
+        return this
+    }
+
     tick() {
         this.tickListener?.(this as any as T)
     }
@@ -82,6 +86,10 @@ export default class RenderableObject<T extends RenderableObject<T>> {
         this.renderListener?.(this as any as T)
         // @ts-ignore
         this.context.fillStyle = "#ff0000"
-        this?.context?.fillRect?.(this.x, this.y, this.width, this.height)
+        this?.context?.fillRect?.(this.position.x, this.position.y, this.size.width, this.size.height)
+    }
+
+    keyboardInput(key: string) {
+        this.keyboardInputListener?.(this as any as T, key)
     }
 }

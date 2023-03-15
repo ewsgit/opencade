@@ -22,6 +22,6 @@ export default class ImageObj extends RenderableObject<ImageObj> {
   render() {
     if (!this.context) return;
 
-    this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
+    this.context.drawImage(this.image, this.position.x, this.position.y, this.size.width, this.size.height);
   }
 }

@@ -139,6 +139,19 @@ export default class Engine {
       });
     });
 
+    this.options.containerElement.tabIndex = 10
+
+    this.options.containerElement.style.outline = "0 solid #00000000 !important"
+
+    this.options.containerElement.focus()
+
+    this.options.containerElement.addEventListener("keydown", (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+
+      this.handleKeyboardInput(e.key)
+    })
+
     setTimeout(
       () => {
         // @ts-ignore
@@ -192,6 +205,12 @@ export default class Engine {
   fullRender() {
     this.layers.forEach((layer) => {
       layer.render();
+    });
+  }
+
+  handleKeyboardInput(key: string) {
+    this.layers.forEach((layer) => {
+      layer.keyboardInput(key);
     });
   }
 }

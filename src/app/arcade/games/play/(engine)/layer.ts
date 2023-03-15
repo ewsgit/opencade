@@ -34,4 +34,10 @@ export default class Layer {
       child.tick()
     })
   }
+
+  keyboardInput(key: string) {
+    this.children.forEach(child => {
+      child.keyboardInput(key)
+    })
+  }
 }
