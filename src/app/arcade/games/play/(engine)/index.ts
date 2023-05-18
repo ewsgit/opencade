@@ -17,6 +17,7 @@ export default class Engine {
     aspectRatio: "16/9",
   };
   private layers: Layer[] = [];
+  private container: HTMLDivElement;
 
   constructor(options: IEngineOptions, callback: (engine: Engine) => void) {
     // Reset global variables from previous engine instances if they exist
@@ -39,13 +40,15 @@ export default class Engine {
       throw new Error(
         `${ENGINE_LOG_PREFIX} The engine option 'containerElement' must be assigned to a HTML 'div' element.`
       );
+    if (this.options.containerElement.hasChildNodes()) throw new Error(`${ENGINE_LOG_PREFIX} ERROR: the containerElement should be empty`)
+    let container = document.createElement("div")
+    this.container = container
+    this.options.containerElement = container
 
     console.log(
       `${ENGINE_LOG_PREFIX}starting up with the options: `,
       this.options
     );
-
-    const container = this.options.containerElement;
 
     container.style.maxWidth = "100%";
     container.style.maxHeight = "100%";
@@ -90,7 +93,7 @@ export default class Engine {
     });
 
     // @ts-ignore
-    window.engineResizeObserver.observe(this.options.containerElement);
+    window.engineResizeObserver.observe(container);
 
     // @ts-ignore
     window.engineMutationObserver = new MutationObserver(() => {
@@ -109,19 +112,19 @@ export default class Engine {
     });
 
     // @ts-ignore
-    window.engineMutationObserver.observe(container.parentElement!, {
+    window.engineMutationObserver.observe(container, {
       attributes: true,
       childList: false,
     });
 
     // backgroundContext.clearRect(0, 0, this.screen().width(), this.screen().height())
 
-    this.options.containerElement.addEventListener("mousemove", (e) => {
+    this.container.addEventListener("mousemove", (e) => {
       this.mouse.x = e.clientX;
       this.mouse.y = e.clientY;
     });
 
-    this.options.containerElement.addEventListener("mousedown", () => {
+    this.container.addEventListener("mousedown", () => {
       this.layers.forEach((layer) => {
         layer.children.forEach((child) => {
           if (
@@ -139,13 +142,13 @@ export default class Engine {
       });
     });
 
-    this.options.containerElement.tabIndex = 10
+    this.container.tabIndex = 10
 
-    this.options.containerElement.style.outline = "0 solid #00000000 !important"
+    this.container.style.outline = "0 solid #00000000 !important"
 
-    this.options.containerElement.focus()
+    this.container.focus()
 
-    this.options.containerElement.addEventListener("keydown", (e) => {
+    this.container.addEventListener("keydown", (e) => {
       e.preventDefault()
       e.stopPropagation()
 
@@ -168,9 +171,9 @@ export default class Engine {
 
   screen() {
     return {
-      width: () => this.options.containerElement.getBoundingClientRect().width,
+      width: () => this.container.getBoundingClientRect().width,
       height: () =>
-        this.options.containerElement.getBoundingClientRect().height,
+        this.container.getBoundingClientRect().height,
     };
   }
 
@@ -182,12 +185,12 @@ export default class Engine {
     canvas.style.width = "100%";
     canvas.style.height = "100%";
 
-    const containerRect = this.options.containerElement.getBoundingClientRect();
+    const containerRect = this.container.getBoundingClientRect();
 
     canvas.width = containerRect.width;
     canvas.height = containerRect.height;
 
-    this.options.containerElement.appendChild(canvas);
+    this.container.appendChild(canvas);
     this.layers.push(layer);
     return this;
   }
